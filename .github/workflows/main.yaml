@@ -33,4 +33,4 @@ jobs:
       - name: "Run tox targets for ${{ matrix.python-version }}"
         run: |
           source $HOME/.poetry/env
-          python -m tox -- --cov=pymfy --cov-report xml
+          python -m tox
