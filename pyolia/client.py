@@ -32,7 +32,10 @@ class VeoliaClient:
     """ Interface class for the Veolia unofficial API """
 
     def __init__(
-        self, username: str, password: str, session: ClientSession = None,
+        self,
+        username: str,
+        password: str,
+        session: ClientSession = None,
     ) -> None:
         """
         Constructor
@@ -62,7 +65,10 @@ class VeoliaClient:
         await self.session.close()
 
     @backoff.on_exception(
-        backoff.expo, NotAuthenticatedException, max_tries=2, on_backoff=relogin,
+        backoff.expo,
+        NotAuthenticatedException,
+        max_tries=2,
+        on_backoff=relogin,
     )
     async def get_consumption(self, month: int, year: int) -> Dict[float, int]:
         """Return the water consumption for the given month and year in liter."""
