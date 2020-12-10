@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "pyhoma"
+name = "pyolia"
 version = "0.5.1"
 description = "Async Python wrapper to interact with internal Veolia API"
 authors = ["Thibaut Etienne"]
