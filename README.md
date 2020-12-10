@@ -1,6 +1,9 @@
-# Veolia
+<p align=center>
+    <img src="https://upload.wikimedia.org/wikipedia/fi/thumb/2/2a/Veolia-logo.svg/250px-Veolia-logo.svg.png"/>
+</p>
 
 <p align=center>
+    <a href="https://pypi.org/project/pyolia/"><img src="https://img.shields.io/pypi/v/pyolia.svg"/></a>
     <a href="https://github.com/tetienne/python-veolia-api/actions"><img src="https://github.com/tetienne/python-veolia-api/workflows/CI/badge.svg"/></a>
     <a href="https://github.com/psf/black"><img src="https://img.shields.io/badge/code%20style-black-000000.svg" /></a>
 </p>
