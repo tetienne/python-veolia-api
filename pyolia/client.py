@@ -1,4 +1,4 @@
-""" Python wrapper for the Tahoma API """
+""" Python wrapper for the Veolia unofficial API """
 from __future__ import annotations
 
 import csv
