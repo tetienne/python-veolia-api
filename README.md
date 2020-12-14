@@ -9,6 +9,11 @@
 </p>
 
 Small client to retrieve the water consumption from Veolia website: https://www.eau-services.com
+
+## Remarks
+Veolia publishes water consumption with a delay of 3 days. It  means if we are the 14, you will be only able to retrieve your data from the 11.
+To retrieve the hourly water consumption, you have to update your preferences on this [page](https://www.eau-services.com/mon-espace-suivi-personnalise.aspx).
+
 ## Installation
 
 ```bash
@@ -19,15 +24,24 @@ pip install pyolia
 
 ```python
 import asyncio
+from datetime import datetime, timedelta
 
 from pyolia.client import VeoliaClient
+
 
 USERNAME = "your username"
 PASSWORD = "your password"
 
 async def main() -> None:
     async with VeoliaClient(USERNAME, PASSWORD) as client:
-        print(await client.get_consumption(12, 2020))
+        now = datetime.now()
+        if now.day < 4:
+            now = now - timedelta(days=3)
+        consumption = await client.get_consumption(now.month, now.year)
+        print(consumption)
+        now = now - timedelta(days=3)
+        consumption = await client.get_consumption(now.month, now.year, now.day)
+        print(consumption)
 
 
 asyncio.run(main())
