@@ -91,7 +91,6 @@ class VeoliaClient:
         """
         if year < 2001:
             raise ValueError("year must be greater than 2000")
-        # Test if date is exist
 
         if date(year, month, day if day else 1) > datetime.now().date():
             raise ValueError("Cannot retrieve consumption from the future.")
