@@ -429,7 +429,7 @@ testing = ["fields", "hunter", "process-tests (==2.0.2)", "six", "pytest-xdist",
 
 [[package]]
 name = "pyupgrade"
-version = "2.7.4"
+version = "2.18.1"
 description = "A tool to automatically upgrade syntax for newer versions."
 category = "dev"
 optional = false
@@ -572,7 +572,7 @@ testing = ["pytest (>=3.5,!=3.7.3)", "pytest-checkdocs (>=1.2.3)", "pytest-flake
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.7,<4.0"
-content-hash = "3b8062127e0e6976f4ed78e1793dcbfa5319840243976e714849c14995d3dc37"
+content-hash = "e262133bd2ac72140a254296ebcdacc70bf99baeb8fc0ff0b3d5564b6e6054b0"
 
 [metadata.files]
 aiohttp = [
@@ -890,8 +890,8 @@ pytest-cov = [
     {file = "pytest_cov-2.12.0-py2.py3-none-any.whl", hash = "sha256:95d4933dcbbacfa377bb60b29801daa30d90c33981ab2a79e9ab4452c165066e"},
 ]
 pyupgrade = [
-    {file = "pyupgrade-2.7.4-py2.py3-none-any.whl", hash = "sha256:ab2f47377e977bec8dd41db634fde35bce78fedd2be0e8b189fe687f23fb1d85"},
-    {file = "pyupgrade-2.7.4.tar.gz", hash = "sha256:e57057ccef3fd8e8fad5ba9f365c1288a076271a222ccb502d865c0d8fe16c3a"},
+    {file = "pyupgrade-2.18.1-py2.py3-none-any.whl", hash = "sha256:d4066fbe134ea161e0c23eb2923d609bc6949c9d50725f2fe0ec91d0eadea21c"},
+    {file = "pyupgrade-2.18.1.tar.gz", hash = "sha256:b6ac3aa12c494dbd237be1baf61ef32d51d0098130fa95374dc8c851fe4c795d"},
 ]
 pyyaml = [
     {file = "PyYAML-5.3.1-cp27-cp27m-win32.whl", hash = "sha256:74809a57b329d6cc0fdccee6318f44b9b8649961fa73144a98735b0aaf029f1f"},
