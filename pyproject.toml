@@ -25,7 +25,7 @@ pre-commit = "^2.13"
 black = {version = "^20.8b1", allow-prereleases = true}
 pylint = "^2.8.3"
 isort = "^5.8.0"
-mypy = "^0.800"
+mypy = "^0.812"
 flake8 = "^3.9.2"
 pyupgrade = "^2.7.4"
 
