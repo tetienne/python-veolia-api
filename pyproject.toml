@@ -5,8 +5,8 @@ description = "Async Python wrapper to interact with internal Veolia API"
 authors = ["Thibaut Etienne"]
 license = "MIT"
 readme = "README.md"
-homepage = "https://github.com/tetienne/pyolia"
-repository = "https://github.com/tetiene/pyolia"
+homepage = "https://github.com/tetienne/python-veolia-api/"
+repository = "https://github.com/tetienne/python-veolia-api/"
 packages = [
     { include = "pyolia" }
 ]
