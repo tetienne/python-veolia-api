@@ -1,0 +1,5 @@
+{
+  "python.linting.pylintEnabled": true,
+  "editor.formatOnSave": true,
+  "python.linting.mypyEnabled": true
+}

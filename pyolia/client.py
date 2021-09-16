@@ -4,7 +4,7 @@ from __future__ import annotations
 import csv
 from datetime import date, datetime, timedelta
 from types import TracebackType
-from typing import Any, Dict, List, Optional, Type, Union
+from typing import Any, Dict, List, Union
 
 import backoff
 from aiohttp import ClientSession
@@ -20,7 +20,7 @@ CSV_DELIMITER = ";"
 CONSUMPTION_HEADER = "consommation(litre)"
 
 
-async def relogin(invocation: Dict[str, Any]) -> None:
+async def relogin(invocation: dict[str, Any]) -> None:
     await invocation["args"][0].login()
 
 
@@ -58,9 +58,9 @@ class VeoliaClient:
 
     async def __aexit__(
         self,
-        exc_type: Optional[Type[BaseException]],
-        exc_value: Optional[BaseException],
-        traceback: Optional[TracebackType],
+        exc_type: type[BaseException] | None,
+        exc_value: BaseException | None,
+        traceback: TracebackType | None,
     ) -> None:
         await self.close()
 
@@ -81,7 +81,7 @@ class VeoliaClient:
     )
     async def get_consumption(
         self, month: int, year: int, day: int = None
-    ) -> List[int]:
+    ) -> list[int]:
         """
         If day is not provided, return the water consumption in liter for each hour for
         the given day. The first item matches 1h, the last one 24h.
@@ -99,7 +99,7 @@ class VeoliaClient:
             return await self._get_hourly_consumption(month, year, day)
         return await self._get_daily_consumption(month, year)
 
-    async def _get_daily_consumption(self, month: int, year: int) -> List[int]:
+    async def _get_daily_consumption(self, month: int, year: int) -> list[int]:
         async with self.session.get(DATA_URL.format(month, year)) as response:
             if response.url.name == "inscription.aspx":
                 raise NotAuthenticatedException
@@ -110,7 +110,7 @@ class VeoliaClient:
 
     async def _get_hourly_consumption(
         self, month: int, year: int, day: int
-    ) -> List[int]:
+    ) -> list[int]:
         if date(year, month, day) > self.last_report_date:
             raise ValueError(
                 f"Hourly consumption is only available for date "
