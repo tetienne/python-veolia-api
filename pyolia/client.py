@@ -101,7 +101,7 @@ class VeoliaClient:
 
     async def _get_daily_consumption(self, month: int, year: int) -> list[int]:
         async with self.session.get(DATA_URL.format(month, year)) as response:
-            if response.url.name == "inscription.aspx":
+            if response.url.name != "mon-espace-suivi-personnalise.aspx":
                 raise NotAuthenticatedException
             data = await response.text()
 
