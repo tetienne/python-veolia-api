@@ -33,7 +33,7 @@ class BadCredentialsException(Exception):
 
 
 class VeoliaClient:
-    """ Interface class for the Veolia unofficial API """
+    """Interface class for the Veolia unofficial API"""
 
     def __init__(
         self,
