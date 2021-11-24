@@ -8,10 +8,14 @@
     <a href="https://github.com/psf/black"><img src="https://img.shields.io/badge/code%20style-black-000000.svg" /></a>
 </p>
 
-Small client to retrieve the water consumption from Veolia website: https://www.eau-services.com
+Small client to retrieve the water consumption from Veolia website:
+
+- https://www.eau-services.com
+- https://agence.eaudugrandlyon.com
 
 ## Remarks
-Veolia publishes water consumption with a delay of 3 days. It  means if we are the 14, you will be only able to retrieve your data from the 11.
+
+Veolia publishes water consumption with a delay of 3 days. It means if we are the 14, you will be only able to retrieve your data from the 11.
 To retrieve the hourly water consumption, you have to update your preferences on this [page](https://www.eau-services.com/mon-espace-suivi-personnalise.aspx).
 
 ## Installation
@@ -27,13 +31,14 @@ import asyncio
 from datetime import datetime, timedelta
 
 from pyolia.client import VeoliaClient
+from pyolia.veolia_websites import VeoliaWebsite
 
 
 USERNAME = "your username"
 PASSWORD = "your password"
 
 async def main() -> None:
-    async with VeoliaClient(USERNAME, PASSWORD) as client:
+    async with VeoliaClient(USERNAME, PASSWORD, VeoliaWebsite.EAU_SERVICES) as client:
         now = datetime.now()
         if now.day < 4:
             now = now - timedelta(days=3)
