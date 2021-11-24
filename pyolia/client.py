@@ -1,35 +1,20 @@
 """ Python wrapper for the Veolia unofficial API """
 from __future__ import annotations
 
-import csv
-from datetime import date, datetime, timedelta
+from datetime import date
 from types import TracebackType
-from typing import Any, Dict, List, Union
+from typing import Any
 
 import backoff
 from aiohttp import ClientSession
 
-JSON = Union[Dict[str, Any], List[Dict[str, Any]]]
-
-DOMAIN = "https://www.eau-services.com"
-LOGIN_URL = f"{DOMAIN}/default.aspx"
-DATA_URL = f"{DOMAIN}/mon-espace-suivi-personnalise.aspx?ex=1&mm={{}}/{{}}"
-DATA_URL_DAY = f"{DATA_URL}&d={{}}"
-
-CSV_DELIMITER = ";"
-CONSUMPTION_HEADER = "consommation(litre)"
+from pyolia.clients.eau_services_client import EauServicesClient
+from pyolia.exceptions import NotAuthenticatedException
+from pyolia.veolia_websites import VeoliaWebsite
 
 
 async def relogin(invocation: dict[str, Any]) -> None:
     await invocation["args"][0].login()
-
-
-class NotAuthenticatedException(Exception):
-    pass
-
-
-class BadCredentialsException(Exception):
-    pass
 
 
 class VeoliaClient:
@@ -39,19 +24,24 @@ class VeoliaClient:
         self,
         username: str,
         password: str,
+        website: VeoliaWebsite = VeoliaWebsite.EAU_SERVICES,
         session: ClientSession = None,
     ) -> None:
         """
         Constructor
 
-        :param username: the username for eau-services.com
-        :param password: the password for eau-services.com
+        :param username: the username used to log in
+        :param password: the password used to log in
+        :param website: the website to use. Default to eau-services.
         :param session: optional ClientSession
         """
 
         self.username = username
         self.password = password
         self.session = session if session else ClientSession()
+
+        if website in [VeoliaWebsite.EAU_SERVICES, VeoliaWebsite.EAU_DU_GRAND_LYON]:
+            self.client = EauServicesClient(self.session, website)
 
     async def __aenter__(self) -> VeoliaClient:
         return self
@@ -71,7 +61,7 @@ class VeoliaClient:
     @property
     def last_report_date(self) -> date:
         """Date since which reports have been published."""
-        return datetime.now().date() - timedelta(days=3)
+        return self.client.last_report_date
 
     @backoff.on_exception(
         backoff.expo,
@@ -89,50 +79,8 @@ class VeoliaClient:
         given month.
         The consumption is not available for the last 3 days.
         """
-        if year < 2001:
-            raise ValueError("year must be greater than 2000")
-
-        if date(year, month, day if day else 1) > datetime.now().date():
-            raise ValueError("Cannot retrieve consumption from the future.")
-
-        if day:
-            return await self._get_hourly_consumption(month, year, day)
-        return await self._get_daily_consumption(month, year)
-
-    async def _get_daily_consumption(self, month: int, year: int) -> list[int]:
-        async with self.session.get(DATA_URL.format(month, year)) as response:
-            if response.url.name != "mon-espace-suivi-personnalise.aspx":
-                raise NotAuthenticatedException
-            data = await response.text()
-
-        reader = csv.DictReader(data.splitlines(), delimiter=CSV_DELIMITER)
-        return [int(row[CONSUMPTION_HEADER]) for row in reader]
-
-    async def _get_hourly_consumption(
-        self, month: int, year: int, day: int
-    ) -> list[int]:
-        if date(year, month, day) > self.last_report_date:
-            raise ValueError(
-                f"Hourly consumption is only available for date "
-                f"before {self.last_report_date}"
-            )
-
-        async with self.session.get(DATA_URL_DAY.format(month, year, day)) as response:
-            if response.url.name == "inscription.aspx":
-                raise NotAuthenticatedException
-            data = await response.text()
-
-        reader = csv.DictReader(data.splitlines(), delimiter=CSV_DELIMITER)
-        try:
-            return [int(row[CONSUMPTION_HEADER]) for row in reader]
-        except IndexError:
-            # Hourly consumption is not enabled
-            return []
+        return await self.client.get_consumption(month, year, day)
 
     async def login(self) -> None:
         """Log into the Veolia website."""
-        async with await self.session.post(
-            LOGIN_URL, data={"login": self.username, "pass": self.password}
-        ) as response:
-            if response.url.name == "connexion.aspx":
-                raise BadCredentialsException
+        await self.client.login(self.username, self.password)
