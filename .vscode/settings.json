@@ -1,5 +1,6 @@
 {
   "python.linting.pylintEnabled": true,
   "editor.formatOnSave": true,
-  "python.linting.mypyEnabled": true
+  "python.linting.mypyEnabled": true,
+  "python.linting.flake8Enabled": true
 }
