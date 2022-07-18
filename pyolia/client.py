@@ -24,7 +24,7 @@ class VeoliaClient:
         self,
         username: str,
         password: str,
-        website: VeoliaWebsite = VeoliaWebsite.EAU_SERVICES,
+        website: VeoliaWebsite = VeoliaWebsite.EAU_DU_GRAND_LYON,
         session: ClientSession = None,
     ) -> None:
         """
