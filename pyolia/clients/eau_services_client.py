@@ -8,11 +8,6 @@ from aiohttp import ClientSession
 from pyolia.exceptions import BadCredentialsException, NotAuthenticatedException
 from pyolia.veolia_websites import VeoliaWebsite
 
-DOMAIN = "https://www.eau-services.com"
-LOGIN_URL = f"{DOMAIN}/default.aspx"
-DATA_URL = f"{DOMAIN}/mon-espace-suivi-personnalise.aspx?ex=1&mm={{}}/{{}}"
-DATA_URL_DAY = f"{DATA_URL}&d={{}}"
-
 CSV_DELIMITER = ";"
 CONSUMPTION_HEADER = "consommation(litre)"
 
@@ -20,7 +15,9 @@ CONSUMPTION_HEADER = "consommation(litre)"
 class EauServicesClient:
     def __init__(self, session: ClientSession, website: VeoliaWebsite) -> None:
         self.session = session
-        self.url = website
+        self.login_url = f"https://{website}/default.aspx"
+        self.data_url = f"https://{website}/mon-espace-suivi-personnalise.aspx?ex=1&mm={{}}/{{}}"
+        self.data_url_day = f"{self.data_url}&d={{}}"
 
     @property
     def last_report_date(self) -> date:
@@ -48,7 +45,7 @@ class EauServicesClient:
         return await self._get_daily_consumption(month, year)
 
     async def _get_daily_consumption(self, month: int, year: int) -> list[int]:
-        async with self.session.get(DATA_URL.format(month, year)) as response:
+        async with self.session.get(self.data_url.format(month, year)) as response:
             if response.url.name != "mon-espace-suivi-personnalise.aspx":
                 raise NotAuthenticatedException
             data = await response.text()
@@ -65,7 +62,7 @@ class EauServicesClient:
                 f"before {self.last_report_date}"
             )
 
-        async with self.session.get(DATA_URL_DAY.format(month, year, day)) as response:
+        async with self.session.get(self.data_url_day.format(month, year, day)) as response:
             if response.url.name == "inscription.aspx":
                 raise NotAuthenticatedException
             data = await response.text()
@@ -80,7 +77,7 @@ class EauServicesClient:
     async def login(self, username: str, password: str) -> None:
         """Log into the Veolia website."""
         async with await self.session.post(
-            LOGIN_URL, data={"login": username, "pass": password}
+            self.login_url, data={"login": username, "pass": password}
         ) as response:
             if response.url.name == "connexion.aspx":
                 raise BadCredentialsException
