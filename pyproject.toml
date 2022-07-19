@@ -14,14 +14,14 @@ packages = [
 [tool.poetry.dependencies]
 python = ">=3.7,<4.0"
 aiohttp = "^3.6.1"
-backoff = "^1.10.0"
+backoff = ">=1.10,<3.0"
 
 [tool.poetry.dev-dependencies]
 tox = "^3.24"
 pytest = "^6.2"
 pytest-cov = "^2.12.0"
 pre-commit = "^2.14"
-black = {version = "^21.11b1", allow-prereleases = true}
+black = {version = "^22.6", allow-prereleases = true}
 pylint = "^2.11.1"
 isort = "^5.9.3"
 mypy = "^0.910"
