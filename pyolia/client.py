@@ -9,7 +9,7 @@ import backoff
 from aiohttp import ClientSession
 
 from pyolia.clients.eau_services_client import EauServicesClient
-from pyolia.exceptions import NotAuthenticatedException
+from pyolia.exceptions import NotAuthenticatedException, BadCredentialsException
 from pyolia.veolia_websites import VeoliaWebsite
 
 
@@ -24,8 +24,8 @@ class VeoliaClient:
         self,
         username: str,
         password: str,
-        website: VeoliaWebsite = VeoliaWebsite.EAU_SERVICES,
         session: ClientSession = None,
+        website: VeoliaWebsite = VeoliaWebsite.EAU_DU_GRAND_LYON,
     ) -> None:
         """
         Constructor
