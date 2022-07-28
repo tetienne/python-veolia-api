@@ -25,15 +25,15 @@ class VeoliaClient:
         username: str,
         password: str,
         session: ClientSession = None,
-        website: VeoliaWebsite = VeoliaWebsite.EAU_DU_GRAND_LYON,
+        website: VeoliaWebsite = VeoliaWebsite.EAU_SERVICES,
     ) -> None:
         """
         Constructor
 
         :param username: the username used to log in
         :param password: the password used to log in
-        :param website: the website to use. Default to eau-services.
         :param session: optional ClientSession
+        :param website: the website to use. Default to eau-services.
         """
 
         self.username = username
