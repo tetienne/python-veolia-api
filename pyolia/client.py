@@ -9,7 +9,7 @@ import backoff
 from aiohttp import ClientSession
 
 from pyolia.clients.eau_services_client import EauServicesClient
-from pyolia.exceptions import NotAuthenticatedException
+from pyolia.exceptions import NotAuthenticatedException, BadCredentialsException
 from pyolia.veolia_websites import VeoliaWebsite
 
 
@@ -24,16 +24,16 @@ class VeoliaClient:
         self,
         username: str,
         password: str,
-        website: VeoliaWebsite = VeoliaWebsite.EAU_SERVICES,
         session: ClientSession = None,
+        website: VeoliaWebsite = VeoliaWebsite.EAU_SERVICES,
     ) -> None:
         """
         Constructor
 
         :param username: the username used to log in
         :param password: the password used to log in
-        :param website: the website to use. Default to eau-services.
         :param session: optional ClientSession
+        :param website: the website to use. Default to eau-services.
         """
 
         self.username = username
