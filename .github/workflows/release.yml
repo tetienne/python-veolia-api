@@ -4,25 +4,29 @@ name: Publish Python Package (PyPi)
 
 on:
   release:
-    types: [ published ]
+    types: [published]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
-          python-version: '3.x'
-      - name: Set up Poetry
-        uses: Gr1N/setup-poetry@v4
+          python-version: "3.x"
+
+      - name: Install Poetry
+        run: pip install --no-input poetry
+
       - name: Bump Poetry version
         run: |
           tag=${{ github.event.release.tag_name }}
           version_number=${tag#?}
           poetry version $version_number
+
       - name: Commit changes
         uses: EndBug/add-and-commit@v4
         with:
@@ -31,6 +35,7 @@ jobs:
           ref: "main"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Build and publish to PyPi
         env:
           POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_API_TOKEN }}
