@@ -132,7 +132,12 @@ class VeoliaClient:
     async def login(self) -> None:
         """Log into the Veolia website."""
         async with await self.session.post(
-            LOGIN_URL, data={"login": self.username, "pass": self.password, "valider-inscription": "Je me connecte"}
+            LOGIN_URL,
+            data={
+                "login": self.username,
+                "pass": self.password,
+                "valider-inscription": "Je me connecte",
+            },
         ) as response:
             if response.url.name == "connexion.aspx":
                 raise BadCredentialsException
