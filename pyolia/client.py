@@ -125,14 +125,19 @@ class VeoliaClient:
         reader = csv.DictReader(data.splitlines(), delimiter=CSV_DELIMITER)
         try:
             return [int(row[CONSUMPTION_HEADER]) for row in reader]
-        except IndexError:
+        except (IndexError, KeyError):
             # Hourly consumption is not enabled
             return []
 
     async def login(self) -> None:
         """Log into the Veolia website."""
         async with await self.session.post(
-            LOGIN_URL, data={"login": self.username, "pass": self.password}
+            LOGIN_URL,
+            data={
+                "login": self.username,
+                "pass": self.password,
+                "valider-inscription": "Je me connecte",
+            },
         ) as response:
             if response.url.name == "connexion.aspx":
                 raise BadCredentialsException
