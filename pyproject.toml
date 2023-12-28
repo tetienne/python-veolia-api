@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pyolia"
-version = "0.3.2"
+version = "0.4.0"
 description = "Async Python wrapper to interact with internal Veolia API"
 authors = ["Thibaut Etienne"]
 license = "MIT"
